@@ -1,7 +1,6 @@
 package com.serio.core.parser;
 
 import java.util.List;
-
 import com.serio.core.model.Result;
 
 

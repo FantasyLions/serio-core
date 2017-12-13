@@ -5,7 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.serio.core.model.Result;
-import com.serio.core.model.ResultBaseCommon;
 import com.serio.core.utils.ResultUtils;
 import com.serio.core.utils.ReflectionUtils;
 
@@ -18,6 +17,7 @@ public class DefaultResultParser implements ResultParser{
 	
 	private static final Logger	log	= LoggerFactory.getLogger(DefaultResultParser.class);
 
+	ResultFactory resultFactory;
 	
 	/**
 	 * 处理返回的结果list，将其转换成指定的对象
@@ -69,7 +69,7 @@ public class DefaultResultParser implements ResultParser{
 				ReflectionUtils.setObjectAttrs(resultList, errorMethodNames, resultComObj, resultComClass);
 			}
 			
-			return buildResultArg( result, resultComObj );
+			return resultFactory.buildResultArg( result, resultComObj );
 			
 		} catch (Exception e) {
 			return setExceptionResult( result, e );
@@ -77,25 +77,7 @@ public class DefaultResultParser implements ResultParser{
 	}
 	
 	
-	/**
-	 * 构建result参数
-	 * @author zl.shi
-	 * @param result
-	 * @param resultComObj
-	 * @return
-	 */
-	public <T>Result<T> buildResultArg( Result<T> result, Object resultComObj ) {
-		
-		ResultBaseCommon resultCom = (ResultBaseCommon)resultComObj;
-		result.setErrorMessage(resultCom.getErrorMessage());
-		result.setSuccess("0".equals(resultCom.getResultCode()));
-		result.setResultCom((T)resultCom);
-		result.setResultCode(resultCom.getResultCode());
-		
-		return result;
-	}
-	
-	
+
 	/**
 	 * 异常信息默认的处理方式
 	 * @param result
@@ -117,5 +99,9 @@ public class DefaultResultParser implements ResultParser{
 		
 	}
 
+
+	public void setResultFactory(ResultFactory resultFactory) {
+		this.resultFactory = resultFactory;
+	}
 
 }

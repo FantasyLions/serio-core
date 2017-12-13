@@ -21,7 +21,7 @@ public class DefaultHttpsCertificates {
 	 * @throws Exception
 	 */
 	public static void initHostnameVerifier() throws Exception {
-		HostnameVerifier hv = new HostnameVerifier() {  
+		HostnameVerifier hv = new HostnameVerifier() {
 	        public boolean verify(String urlHostName, SSLSession session) {
 	        	log.info("Warning: URL Host: " + urlHostName + " vs. " + session.getPeerHost());
 	            return true;  
