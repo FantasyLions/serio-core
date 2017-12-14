@@ -1,4 +1,4 @@
-package com.serio.core;
+package com.serio.core.model;
 
 import com.serio.core.model.ListResultBaseCommon;
 

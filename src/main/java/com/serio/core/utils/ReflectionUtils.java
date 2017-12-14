@@ -1,8 +1,10 @@
 package com.serio.core.utils;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -31,9 +33,10 @@ public class ReflectionUtils {
 	 * @throws InvocationTargetException 
 	 * @throws IllegalArgumentException 
 	 * @throws IllegalAccessException 
+	 * @throws NoSuchFieldException 
 	 */
 	public static void setObjectAttrs( List<String> values, String[] fieldNames, Object obj, Class<?> objClass )
-			throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+			throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException {
 		Assert.notNull(values, "values must not be null");
 		Assert.notNull(fieldNames, "fieldNames must not be null");
 		
@@ -58,11 +61,18 @@ public class ReflectionUtils {
 	 * @throws IllegalAccessException
 	 * @throws IllegalArgumentException
 	 * @throws InvocationTargetException
+	 * @throws NoSuchFieldException 
 	 */
 	public static void setObjectAttr( Object obj, String fieldName, String value, Class<?> objClass )
-			throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Method method = objClass.getMethod( SETTER_METHOD_NAME_PREFIX + StringUtils.capitalize(fieldName), String.class );
-        method.invoke( obj, value );
+			throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException {
+		
+		Field field = objClass.getDeclaredField(fieldName);
+		
+		Class<?> fieldtype = field.getType();
+		
+		Method method = objClass.getMethod( SETTER_METHOD_NAME_PREFIX + StringUtils.capitalize(fieldName), fieldtype );
+		
+        method.invoke( obj, TypeConverter.stringToType(value, fieldtype) );
 	}
 	
 	
@@ -157,4 +167,5 @@ public class ReflectionUtils {
 		
 		return paramsClass;
 	}
+
 }
