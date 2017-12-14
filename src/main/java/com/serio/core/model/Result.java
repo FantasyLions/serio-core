@@ -1,6 +1,8 @@
 package com.serio.core.model;
 
 import java.util.List;
+
+import com.serio.core.parser.ResultFactory;
 import com.serio.core.utils.ReflectionUtils;
 
 /**
@@ -12,22 +14,23 @@ import com.serio.core.utils.ReflectionUtils;
 public class Result<T> {
 	
 	/**
-	 * Givex返回的原始数据，这里面的字段可以自行去文档了解
+	 * 接口返回的原始数据，这里面的字段可以自行去文档了解
 	 */
 	private List<String> originalResult;
 	
 	/**
-	 * Givex 返回的resultCode
+	 * 接口 返回的resultCode
 	 */
 	private String resultCode;
 	
 	/**
-	 * <p>导致错误的原因，一般会放Givex返回的错误原因，也会有本地代码报错信息。如果是Givex返回的错误信息{@link #resultCom}对象中的errorMessage也会有保存信息</p>
+	 * <p>导致错误的原因，一般会放接口返回的错误原因，也会有本地代码报错信息。如果是接口返回的错误信息{@link #resultCom}对象中的errorMessage也会有保存信息</p>
 	 */
 	private String errorMessage;
 	
 	/**
-	 * 判断Givex返回的状态是否为正常，一般Givex result code 返回为0时为true
+	 * 判断接口返回的状态是否为正常，一般根据接口 result code 返回值判断
+	 * @see ResultFactory#buildResultArg(Result, Object) 可以自行实现后重新定义
 	 */
 	private boolean isSuccess;
 	
@@ -42,7 +45,7 @@ public class Result<T> {
 	private Exception exception;
 	
 	/**
-	 * Givex返回结果解析后的对象
+	 * 接口返回结果解析后的对象
 	 */
 	private T resultCom;
 	
