@@ -12,6 +12,10 @@ public class TypeConverter {
 	
 	public static Object stringToType( String str, Class<?> type ) {
 		
+		if ( type.equals(String.class) ) {
+			return str;
+		}
+		
 		return JSON.parseObject(str, type);
 		
 	}
