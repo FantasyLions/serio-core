@@ -10,7 +10,7 @@ Reduce repetitive code
 <project>
 
     <properties>
-        <version.serio>1.0.0</version.serio>
+        <version.serio>1.0.1</version.serio>
     </properties>
     
         <repositories>
