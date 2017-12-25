@@ -16,7 +16,7 @@ Reduce repetitive code
         <repositories>
                 <repository>
                     <id>serio-repository</id>
-                    <url>https://raw.githubusercontent.com/FantasyLions/serio-repository/master</url>
+                    <url>https://raw.githubusercontent.com/fantasylion/serio-repository/master</url>
                 </repository>
         </repositories> 
 
