@@ -26,9 +26,5 @@ public class TypeConverter {
 	}
 	
 	
-	public static Map convertToMap( String str ) {
-		JSONObject jsonObj = JSON.parseObject(str);
-		return jsonObj.toJavaObject(Map.class);
-	}
 	
 }
