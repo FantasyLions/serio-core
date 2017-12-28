@@ -3,7 +3,7 @@ package com.serio.core.utils.dao.support;
 import java.io.Serializable;
 import java.util.List;
 
-import com.serio.core.utils.Page;
+import com.serio.core.utils.view.Page;
 
 public interface BaseDao<T> {
 	

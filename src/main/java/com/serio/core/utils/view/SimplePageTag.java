@@ -1,4 +1,4 @@
-package com.serio.core.utils;
+package com.serio.core.utils.view;
 
 import java.io.IOException;
 
@@ -10,8 +10,10 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.serio.core.utils.LogUtils;
+
 // 分页标签
-public class PageTag extends TagSupport {
+public class SimplePageTag extends TagSupport {
   private static final long serialVersionUID = -7668378498580212374L;
   private String url;// url
   private String style;// 当前页样式
@@ -30,7 +32,7 @@ public class PageTag extends TagSupport {
     StringBuilder html = new StringBuilder("");
     // 参数初始化
     if (url == null || "".equals(url)) {
-      LogUtils.error("url不能为空", PageTag.class);
+      LogUtils.error("url不能为空", SimplePageTag.class);
     }
     if (style == null || "".equals(style)) {
       style = "background:#1E90FF;color:white";
@@ -45,7 +47,7 @@ public class PageTag extends TagSupport {
     strShowSize=StringUtils.defaultIfBlank(strShowSize, "10");
     String strTotalPage=getValueFromRequest("totalPage", totalPage, request);
     if (strTotalPage == null || "".equals(strTotalPage)) {
-      LogUtils.error("totalPage不能为空", PageTag.class);
+      LogUtils.error("totalPage不能为空", SimplePageTag.class);
       return EVAL_BODY_INCLUDE;
     }
     // 参数转为对应integer类型
@@ -93,7 +95,7 @@ public class PageTag extends TagSupport {
         html.append("</a>");
       }
     } else {
-      LogUtils.error("缺少pageBar参数", PageTag.class);
+      LogUtils.error("缺少pageBar参数", SimplePageTag.class);
     }
     // 下一页
     if (intCurrentPage < intTotalPage) {

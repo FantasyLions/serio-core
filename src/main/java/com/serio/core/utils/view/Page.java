@@ -1,4 +1,4 @@
-package com.serio.core.utils;
+package com.serio.core.utils.view;
 
 
 import java.io.Serializable;

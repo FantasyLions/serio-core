@@ -31,7 +31,7 @@ import org.springframework.util.ReflectionUtils;
 import com.serio.core.utils.BeanUtils;
 import com.serio.core.utils.GenericsUtils;
 import com.serio.core.utils.LogUtils;
-import com.serio.core.utils.Page;
+import com.serio.core.utils.view.Page;
 
 
 /**
