@@ -1,4 +1,4 @@
-package com.serio.core.utils;
+package com.serio.core.utils.media;
 //失败的话把文件移到失败文件目录
 import java.io.File;
 import java.io.InputStream;
@@ -8,6 +8,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.serio.core.utils.ConfigFileParams;
+import com.serio.core.utils.FileConfig;
 
 public class ConvertAudio {
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());

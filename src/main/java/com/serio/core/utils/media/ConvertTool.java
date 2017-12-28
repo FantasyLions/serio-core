@@ -1,4 +1,4 @@
-package com.serio.core.utils;
+package com.serio.core.utils.media;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.serio.core.utils.FileConfig;
 
 public class ConvertTool{
   protected static Logger logger = LoggerFactory.getLogger("ConvertTool");

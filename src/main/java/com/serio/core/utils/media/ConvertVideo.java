@@ -1,4 +1,4 @@
-package com.serio.core.utils;
+package com.serio.core.utils.media;
 //失败的话把文件移到失败文件目录
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,16 +8,19 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.serio.core.utils.ConfigFileParams;
+import com.serio.core.utils.Constants;
+import com.serio.core.utils.FileConfig;
+import com.serio.core.utils.FileUtils;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 public class ConvertVideo {
 	
@@ -222,9 +225,11 @@ public class ConvertVideo {
 		}
 		return 9;
 	}
+	
 	private boolean IsNeedConvertMP4() {
 	  return true;
 	}
+	
 	private boolean CheckVideoInfo()
 	{
 		JSONObject jsonObject = JSONObject.fromObject(sourceVideoInfo);

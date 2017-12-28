@@ -1,4 +1,4 @@
-package com.serio.core.utils;
+package com.serio.core.utils.media;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -10,6 +10,10 @@ import javax.imageio.ImageIO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.serio.core.utils.ConfigFileParams;
+import com.serio.core.utils.Constants;
+import com.serio.core.utils.FileUtils;
 
 
 public class ConvertPic {
