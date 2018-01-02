@@ -38,22 +38,22 @@ public class VideoCuter {
 	 * @author zl.shi
 	 * @param videoSource
 	 * @param imgSource
-	 * @param time	00:00:05
-	 * @param size	640*360
+	 * @param time	like this 00:00:05
+	 * @param size	like this 640*360
 	 * @throws EncoderException
 	 */
 	public void cutTime( File videoSource, File imgSource, String time, String size ) throws EncoderException {
 		
 		FFMPEGExecutor ffmpeg = locator.createExecutor();
-		ffmpeg.addArgument("-ss");
-		ffmpeg.addArgument(time);// 图片在视频中的秒数
-		ffmpeg.addArgument("-i");
+		ffmpeg.addArgument(MediaConstant.PARAMETER_NAME_SECONDS);
+		ffmpeg.addArgument(time);
+		ffmpeg.addArgument(MediaConstant.PARAMETER_NAME_SOURCE);
 		ffmpeg.addArgument(videoSource.getAbsolutePath());
-		ffmpeg.addArgument("-f");
+		ffmpeg.addArgument(MediaConstant.PARAMETER_NAME_FMT);
 		ffmpeg.addArgument("image2");
-		ffmpeg.addArgument("-s");
-		ffmpeg.addArgument(size);     // 16:9, should be fixed value, else can't be adjusted in vpm
-		ffmpeg.addArgument("-y");
+		ffmpeg.addArgument(MediaConstant.PARAMETER_NAME_SIZE);
+		ffmpeg.addArgument(size);
+		ffmpeg.addArgument(MediaConstant.PARAMETER_NAME_DESTINATION);
 		ffmpeg.addArgument(imgSource.getAbsolutePath());
 		
 		try {
