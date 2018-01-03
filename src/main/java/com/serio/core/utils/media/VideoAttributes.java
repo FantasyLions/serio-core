@@ -20,6 +20,8 @@ package com.serio.core.utils.media;
 
 import java.io.Serializable;
 
+import com.serio.core.annotation.media.ArgName;
+
 /**
  * Attributes controlling the video encoding process.
  * 
@@ -39,35 +41,41 @@ public class VideoAttributes implements Serializable {
 	 * The codec name for the encoding process. If null or not specified the
 	 * encoder will perform a direct stream copy.
 	 */
+	@ArgName("-vcodec")
 	private String codec = null;
 
 	/**
 	 * The the forced tag/fourcc value for the video stream.
 	 */
+	@ArgName("-vtag")
 	private String tag = null;
 
 	/**
 	 * The bitrate value for the encoding process. If null or not specified a
 	 * default value will be picked.
 	 */
+	@ArgName("-b")
 	private Integer bitRate = null;
 
 	/**
 	 * The frame rate value for the encoding process. If null or not specified a
 	 * default value will be picked.
 	 */
+	@ArgName("-r")
 	private Integer frameRate = null;
 
 	/**
 	 * The video size for the encoding process. If null or not specified the
 	 * source video size will not be modified.
 	 */
+	@ArgName("-s")
 	private VideoSize size = null;
 	
 	/**
 	 *	-vframes
 	 *	Set the number of video frames to output. This is an obsolete alias for -frames:v, which you should use instead.
 	 */
+	@ArgName("-vframes")
 	private Integer videoFrames = null;
 
 	/**
@@ -75,7 +83,7 @@ public class VideoAttributes implements Serializable {
 	 * 
 	 * @return The codec name for the encoding process.
 	 */
-	String getCodec() {
+	public String getCodec() {
 		return codec;
 	}
 
@@ -101,7 +109,7 @@ public class VideoAttributes implements Serializable {
 	 * 
 	 * @return The the forced tag/fourcc value for the video stream.
 	 */
-	String getTag() {
+	public String getTag() {
 		return tag;
 	}
 
@@ -120,7 +128,7 @@ public class VideoAttributes implements Serializable {
 	 * 
 	 * @return The bitrate value for the encoding process.
 	 */
-	Integer getBitRate() {
+	public Integer getBitRate() {
 		return bitRate;
 	}
 
@@ -140,7 +148,7 @@ public class VideoAttributes implements Serializable {
 	 * 
 	 * @return The frame rate value for the encoding process.
 	 */
-	Integer getFrameRate() {
+	public Integer getFrameRate() {
 		return frameRate;
 	}
 
@@ -160,7 +168,7 @@ public class VideoAttributes implements Serializable {
 	 * 
 	 * @return The video size for the encoding process.
 	 */
-	VideoSize getSize() {
+	public VideoSize getSize() {
 		return size;
 	}
 

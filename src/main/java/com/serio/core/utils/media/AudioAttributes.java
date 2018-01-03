@@ -20,6 +20,8 @@ package com.serio.core.utils.media;
 
 import java.io.Serializable;
 
+import com.serio.core.annotation.media.ArgName;
+
 /**
  * Attributes controlling the audio encoding process.
  * 
@@ -39,30 +41,35 @@ public class AudioAttributes implements Serializable {
 	 * The codec name for the encoding process. If null or not specified the
 	 * encoder will perform a direct stream copy.
 	 */
+	@ArgName("-acodec")
 	private String codec = null;
 
 	/**
 	 * The bitrate value for the encoding process. If null or not specified a
 	 * default value will be picked.
 	 */
+	@ArgName("-ab")
 	private Integer bitRate = null;
 
 	/**
 	 * The samplingRate value for the encoding process. If null or not specified
 	 * a default value will be picked.
 	 */
+	@ArgName("-ar")
 	private Integer samplingRate = null;
 
 	/**
 	 * The channels value (1=mono, 2=stereo) for the encoding process. If null
 	 * or not specified a default value will be picked.
 	 */
+	@ArgName("-ac")
 	private Integer channels = null;
 
 	/**
 	 * The volume value for the encoding process. If null or not specified a
 	 * default value will be picked. If 256 no volume change will be performed.
 	 */
+	@ArgName("-vol")
 	private Integer volume = null;
 
 	/**
@@ -70,7 +77,7 @@ public class AudioAttributes implements Serializable {
 	 * 
 	 * @return The codec name for the encoding process.
 	 */
-	String getCodec() {
+	public String getCodec() {
 		return codec;
 	}
 
@@ -96,7 +103,7 @@ public class AudioAttributes implements Serializable {
 	 * 
 	 * @return The bitrate value for the encoding process.
 	 */
-	Integer getBitRate() {
+	public Integer getBitRate() {
 		return bitRate;
 	}
 
@@ -116,7 +123,7 @@ public class AudioAttributes implements Serializable {
 	 * 
 	 * @return the samplingRate The samplingRate value for the encoding process.
 	 */
-	Integer getSamplingRate() {
+	public Integer getSamplingRate() {
 		return samplingRate;
 	}
 
@@ -136,7 +143,7 @@ public class AudioAttributes implements Serializable {
 	 * 
 	 * @return The channels value (1=mono, 2=stereo) for the encoding process.
 	 */
-	Integer getChannels() {
+	public Integer getChannels() {
 		return channels;
 	}
 
@@ -157,7 +164,7 @@ public class AudioAttributes implements Serializable {
 	 * 
 	 * @return The volume value for the encoding process.
 	 */
-	Integer getVolume() {
+	public Integer getVolume() {
 		return volume;
 	}
 

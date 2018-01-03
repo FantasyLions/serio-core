@@ -21,11 +21,18 @@ package com.serio.core.utils.media;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.serio.core.annotation.media.AnnotationProcesser;
+import com.serio.core.annotation.media.ArgName;
+import com.serio.core.utils.ReflectionUtils;
 
 /**
  * Main class of the package. Instances can encode audio and video streams.
@@ -737,12 +744,14 @@ public class Encoder {
 	 * @throws EncoderException
 	 *             If a problems occurs during the encoding process.
 	 */
-	public void encode(File source, File target, EncodingAttributes attributes,
+/*	public void encode(File source, File target, EncodingAttributes attributes,
 			EncoderProgressListener listener) throws IllegalArgumentException,
 			InputFormatException, EncoderException {
+		
 		String formatAttribute = attributes.getFormat();
 		Float offsetAttribute = attributes.getOffset();
 		Float durationAttribute = attributes.getDuration();
+		
 		AudioAttributes audioAttributes = attributes.getAudioAttributes();
 		VideoAttributes videoAttributes = attributes.getVideoAttributes();
 		if (audioAttributes == null && videoAttributes == null) {
@@ -836,6 +845,246 @@ public class Encoder {
 		} catch (IOException e) {
 			throw new EncoderException(e);
 		}
+		try {
+			String lastWarning = null;
+			long duration;
+			long progress = 0;
+			RBufferedReader reader = null;
+			reader = new RBufferedReader(new InputStreamReader(ffmpeg
+					.getErrorStream()));
+			MultimediaInfo info = parseMultimediaInfo(source, reader);
+			if (durationAttribute != null) {
+				duration = (long) Math
+						.round((durationAttribute.floatValue() * 1000L));
+			} else {
+				duration = info.getDuration();
+				if (offsetAttribute != null) {
+					duration -= (long) Math
+							.round((offsetAttribute.floatValue() * 1000L));
+				}
+			}
+			if (listener != null) {
+				listener.sourceInfo(info);
+			}
+			int step = 0;
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (step == 0) {
+					if (line.startsWith("WARNING: ")) {
+						if (listener != null) {
+							listener.message(line);
+						}
+					} else if (!line.startsWith("Output #0")) {
+						throw new EncoderException(line);
+					} else {
+						step++;
+					}
+				} else if (step == 1) {
+					if (!line.startsWith("  ")) {
+						step++;
+					}
+				}
+				if (step == 2) {
+					if (!line.startsWith("Stream mapping:")) {
+						throw new EncoderException(line);
+					} else {
+						step++;
+					}
+				} else if (step == 3) {
+					if (!line.startsWith("  ")) {
+						step++;
+					}
+				}
+				if (step == 4) {
+					line = line.trim();
+					if (line.length() > 0) {
+						Hashtable table = parseProgressInfoLine(line);
+						if (table == null) {
+							if (listener != null) {
+								listener.message(line);
+							}
+							lastWarning = line;
+						} else {
+							if (listener != null) {
+								String time = (String) table.get("time");
+								if (time != null) {
+									int dot = time.indexOf('.');
+									if (dot > 0 && dot == time.length() - 2
+											&& duration > 0) {
+										String p1 = time.substring(0, dot);
+										String p2 = time.substring(dot + 1);
+										try {
+											long i1 = Long.parseLong(p1);
+											long i2 = Long.parseLong(p2);
+											progress = (i1 * 1000L)
+													+ (i2 * 100L);
+											int perm = (int) Math
+													.round((double) (progress * 1000L)
+															/ (double) duration);
+											if (perm > 1000) {
+												perm = 1000;
+											}
+											listener.progress(perm);
+										} catch (NumberFormatException e) {
+											;
+										}
+									}
+								}
+							}
+							lastWarning = null;
+						}
+					}
+				}
+			}
+			if (lastWarning != null) {
+				if (!SUCCESS_PATTERN.matcher(lastWarning).matches()) {
+					throw new EncoderException(lastWarning);
+				}
+			}
+		} catch (IOException e) {
+			throw new EncoderException(e);
+		} finally {
+			ffmpeg.destroy();
+		}
+	}*/
+	
+	
+	/**
+	 * Re-encode a multimedia file.
+	 * 
+	 * @param source
+	 *            The source multimedia file. It cannot be null. Be sure this
+	 *            file can be decoded (see
+	 *            {@link Encoder#getSupportedDecodingFormats()},
+	 *            {@link Encoder#getAudioDecoders()} and
+	 *            {@link Encoder#getVideoDecoders()}).
+	 * @param target
+	 *            The target multimedia re-encoded file. It cannot be null. If
+	 *            this file already exists, it will be overwrited.
+	 * @param attributes
+	 *            A set of attributes for the encoding process.
+	 * @param listener
+	 *            An optional progress listener for the encoding process. It can
+	 *            be null.
+	 * @throws IllegalArgumentException
+	 *             If both audio and video parameters are null.
+	 * @throws InputFormatException
+	 *             If the source multimedia file cannot be decoded.
+	 * @throws EncoderException
+	 *             If a problems occurs during the encoding process.
+	 */
+	public void encode(File source, File target, EncodingAttributes attributes,
+			EncoderProgressListener listener) throws IllegalArgumentException,
+			InputFormatException, EncoderException {
+		
+		String formatAttribute = attributes.getFormat();
+		Float offsetAttribute = attributes.getOffset();
+		Float durationAttribute = attributes.getDuration();
+		
+		AudioAttributes audioAttributes = attributes.getAudioAttributes();
+		VideoAttributes videoAttributes = attributes.getVideoAttributes();
+		if (audioAttributes == null && videoAttributes == null) {
+			throw new IllegalArgumentException("Both audio and video attributes are null");
+		}
+		target = target.getAbsoluteFile();
+		target.getParentFile().mkdirs();
+		
+		FFMPEGExecutor ffmpeg = locator.createExecutor();
+		if (offsetAttribute != null) {
+			ffmpeg.addArgument("-ss");
+			ffmpeg.addArgument(String.valueOf(offsetAttribute.floatValue()));
+		}
+		
+		ffmpeg.addArgument("-i");
+		ffmpeg.addArgument(source.getAbsolutePath());
+		if (durationAttribute != null) {
+			ffmpeg.addArgument("-t");
+			ffmpeg.addArgument(String.valueOf(durationAttribute.floatValue()));
+		}
+		
+		setVideoAttriutes( ffmpeg, videoAttributes );
+		
+		setAudioAttributes( ffmpeg, audioAttributes );
+		
+		ffmpeg.addArgument("-f");
+		ffmpeg.addArgument(formatAttribute);
+		ffmpeg.addArgument("-y");
+		ffmpeg.addArgument(target.getAbsolutePath());
+		try {
+			ffmpeg.execute();
+		} catch (IOException e) {
+			throw new EncoderException(e);
+		}
+		
+		parseResult( ffmpeg, source, durationAttribute, offsetAttribute, listener );
+	}
+	
+	
+	
+	/**
+	 * @author zl.shi
+	 * @throws SecurityException 
+	 * @throws NoSuchFieldException 
+	 */
+	public void setAudioAttributes( FFMPEGExecutor ffmpeg, AudioAttributes audioAttributes ) {
+		try {
+			if (audioAttributes == null) {
+				ffmpeg.addArgument("-an");
+				return;
+			}
+			
+			Map<Field, Object> annotations = AnnotationProcesser.getAnnotationInfos( AudioAttributes.class, ArgName.class, "value" );
+			
+			for ( Entry<Field, Object> entry : annotations.entrySet() ) {
+				Field  field = entry.getKey();
+				Object arg = ReflectionUtils.getObjectAttr(audioAttributes, field, audioAttributes.getClass());
+				Object value = entry.getValue();
+				
+				if (arg != null) {
+					ffmpeg.addArgument(String.valueOf(value));
+					ffmpeg.addArgument(String.valueOf(arg));
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	
+	/**
+	 * @author zl.shi
+	 */
+	public void setVideoAttriutes( FFMPEGExecutor ffmpeg, VideoAttributes videoAttributes ) {
+		
+		try {
+			if (videoAttributes == null) {
+				ffmpeg.addArgument("-vn");
+				return;
+			}
+			
+			Map<Field, Object> annotations = AnnotationProcesser.getAnnotationInfos( VideoAttributes.class, ArgName.class, "value" );
+			
+			for ( Entry<Field, Object> entry : annotations.entrySet() ) {
+				Field  field = entry.getKey();
+				Object arg = ReflectionUtils.getObjectAttr(videoAttributes, field, videoAttributes.getClass());
+				Object value = entry.getValue();
+				
+				if (arg != null) {
+					ffmpeg.addArgument(String.valueOf(value));
+					ffmpeg.addArgument(String.valueOf(arg));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void parseResult( FFMPEGExecutor ffmpeg, File source, Float durationAttribute, Float offsetAttribute, EncoderProgressListener listener ) throws IllegalArgumentException,
+	InputFormatException, EncoderException {
+		
 		try {
 			String lastWarning = null;
 			long duration;

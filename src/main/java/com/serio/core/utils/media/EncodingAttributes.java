@@ -20,6 +20,8 @@ package com.serio.core.utils.media;
 
 import java.io.Serializable;
 
+import com.serio.core.annotation.media.ArgName;
+
 /**
  * Attributes controlling the encoding process.
  * 
@@ -33,12 +35,14 @@ public class EncodingAttributes implements Serializable {
 	 * The format name for the encoded target multimedia file. Be sure this
 	 * format is supported (see {@link Encoder#getSupportedEncodingFormats()}.
 	 */
+	@ArgName("-f")
 	private String format = null;
 
 	/**
 	 * The start offset time (seconds). If null or not specified no start offset
 	 * will be applied.
 	 */
+	@ArgName("-ss")
 	private Float offset = null;
 
 	/**
@@ -46,6 +50,7 @@ public class EncodingAttributes implements Serializable {
 	 * the source stream, starting from the offset, will be completely
 	 * re-encoded in the target stream.
 	 */
+	@ArgName("-t")
 	private Float duration = null;
 
 	/**
@@ -67,7 +72,7 @@ public class EncodingAttributes implements Serializable {
 	 * 
 	 * @return The format name for the encoded target multimedia file.
 	 */
-	String getFormat() {
+	public String getFormat() {
 		return format;
 	}
 
@@ -87,7 +92,7 @@ public class EncodingAttributes implements Serializable {
 	 * 
 	 * @return The start offset time (seconds).
 	 */
-	Float getOffset() {
+	public Float getOffset() {
 		return offset;
 	}
 
@@ -107,7 +112,7 @@ public class EncodingAttributes implements Serializable {
 	 * 
 	 * @return The duration (seconds) of the re-encoded stream.
 	 */
-	Float getDuration() {
+	public Float getDuration() {
 		return duration;
 	}
 
@@ -130,7 +135,7 @@ public class EncodingAttributes implements Serializable {
 	 * @return The attributes for the encoding of the audio stream in the target
 	 *         multimedia file.
 	 */
-	AudioAttributes getAudioAttributes() {
+	public AudioAttributes getAudioAttributes() {
 		return audioAttributes;
 	}
 
@@ -154,7 +159,7 @@ public class EncodingAttributes implements Serializable {
 	 * @return The attributes for the encoding of the video stream in the target
 	 *         multimedia file.
 	 */
-	VideoAttributes getVideoAttributes() {
+	public VideoAttributes getVideoAttributes() {
 		return videoAttributes;
 	}
 

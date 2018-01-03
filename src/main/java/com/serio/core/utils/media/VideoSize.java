@@ -71,8 +71,7 @@ public class VideoSize implements Serializable {
 	}
 
 	public String toString() {
-		return getClass().getName() + " (width=" + width + ", height=" + height
-				+ ")";
+		return this.getWidth() + "x" + this.getHeight();
 	}
 
 }

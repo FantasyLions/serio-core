@@ -19,6 +19,9 @@ public class ReflectionUtils {
 	
 	public static final String SETTER_METHOD_NAME_PREFIX = "set";
 	
+	
+	public static final String GETTER_METHOD_NAME_PREFIX = "get";
+	
 	/**
 	 * 设置参数属性，字段名和属性值一一对应，设置到指定对象的字段中，
 	 * <p>Note:
@@ -73,6 +76,50 @@ public class ReflectionUtils {
 		Method method = objClass.getMethod( SETTER_METHOD_NAME_PREFIX + StringUtils.capitalize(fieldName), fieldtype );
 		
         method.invoke( obj, TypeConverter.stringToType(value, fieldtype) );
+	}
+	
+	
+	/**
+	 * 调用字段对应的getter方法
+	 * @author zl.shi
+	 * @param obj
+	 * @param fieldName
+	 * @param objClass
+	 * @return
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws NoSuchFieldException
+	 */
+	public static Object getObjectAttr( Object obj, String fieldName, Class<?> objClass ) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException {
+		
+		Field field = objClass.getDeclaredField(fieldName);
+		
+		return getObjectAttr( obj, field, objClass );
+	}
+	
+	
+	/**
+	 * 调用字段对应的getter方法
+	 * @author zl.shi
+	 * @param obj
+	 * @param field
+	 * @param objClass
+	 * @return
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 */
+	public static Object getObjectAttr( Object obj, Field field, Class<?> objClass ) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		
+		
+		Method method = objClass.getMethod( GETTER_METHOD_NAME_PREFIX + StringUtils.capitalize(field.getName()), null );
+		
+        return method.invoke( obj, null );
 	}
 	
 	
