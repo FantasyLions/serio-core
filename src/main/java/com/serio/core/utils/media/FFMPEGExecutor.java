@@ -23,13 +23,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * A ffmpeg process wrapper.
  * 
  * @author Carlo Pelliccia
  */
 class FFMPEGExecutor {
-
+	
+	protected static Logger logger = LoggerFactory.getLogger(FFMPEGExecutor.class);
+	
 	/**
 	 * The path of the ffmpeg executable.
 	 */
@@ -100,6 +105,7 @@ class FFMPEGExecutor {
 			cmd[i + 1] = (String) args.get(i);
 		}
 		Runtime runtime = Runtime.getRuntime();
+		printCommand( cmd );
 		ffmpeg = runtime.exec(cmd);
 		ffmpegKiller = new ProcessKiller(ffmpeg);
 		runtime.addShutdownHook(ffmpegKiller);
@@ -108,6 +114,25 @@ class FFMPEGExecutor {
 		errorStream = ffmpeg.getErrorStream();
 	}
 
+	
+	/**
+	 * Print the command line to log
+	 * @author zl.shi
+	 * @param cmd
+	 */
+	protected void printCommand( String[] cmd ) {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("Command: ");
+		for ( String c : cmd ) {
+			sb.append(c);
+			sb.append(" ");
+		}
+		
+		logger.debug( sb.toString() );
+	}
+	
+	
 	/**
 	 * Returns a stream reading from the ffmpeg process standard output channel.
 	 * 

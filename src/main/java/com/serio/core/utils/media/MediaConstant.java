@@ -39,5 +39,30 @@ public class MediaConstant {
 	 */
 	public static String PARAMETER_NAME_DESTINATION = "-y";
 	
+	/**
+	 * Audio bitrate
+	 */
+	public static String PARAMETER_NAME_BITRATE = "-ab";
+	
+	
+	/**
+	 * <p>Set the audio sampling frequency. For output streams it is set by default to the frequency of the corresponding input stream. 
+	 * For input streams this option only makes sense for audio grabbing devices and raw demuxers and is mapped to the corresponding demuxer options.</p>
+	 */
+	public static String PARAMETER_NAME_FREQUENCY = "-ar";
+	
+	
+	/**
+	 * <p>To set the video bitrate</p>
+	 */
+	public static String PARAMETER_NAME_VIDEO_BITRATE = "-b:v";
+	
+	
+	/**
+	 * The codec <code>mjpeg</code>
+	 */
+	public static String PARAMETER_CODEC_MJPEG = "mjpeg";
+	
+	
 
 }

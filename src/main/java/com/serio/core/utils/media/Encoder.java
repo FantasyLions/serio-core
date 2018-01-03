@@ -791,6 +791,12 @@ public class Encoder {
 				ffmpeg.addArgument(String.valueOf(size.getWidth()) + "x"
 						+ String.valueOf(size.getHeight()));
 			}
+			
+			Integer vFrame = videoAttributes.getVideoFrames();
+			if (vFrame != null) {
+				ffmpeg.addArgument("-vframes");
+				ffmpeg.addArgument(String.valueOf(vFrame.intValue()));
+			}
 		}
 		if (audioAttributes == null) {
 			ffmpeg.addArgument("-an");

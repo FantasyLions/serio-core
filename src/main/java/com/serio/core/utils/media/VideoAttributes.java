@@ -63,6 +63,12 @@ public class VideoAttributes implements Serializable {
 	 * source video size will not be modified.
 	 */
 	private VideoSize size = null;
+	
+	/**
+	 *	-vframes
+	 *	Set the number of video frames to output. This is an obsolete alias for -frames:v, which you should use instead.
+	 */
+	private Integer videoFrames = null;
 
 	/**
 	 * Returns the codec name for the encoding process.
@@ -158,6 +164,21 @@ public class VideoAttributes implements Serializable {
 		return size;
 	}
 
+	
+	/**
+	 * -vframes
+	 *	Set the number of video frames to output. This is an obsolete alias for -frames:v, which you should use instead.
+	 * @author zl.shi
+	 * @return
+	 */
+	public Integer getVideoFrames() {
+		return videoFrames;
+	}
+
+	public void setVideoFrames(Integer videoFrames) {
+		this.videoFrames = videoFrames;
+	}
+
 	/**
 	 * Sets the video size for the encoding process. If null or not specified
 	 * the source video size will not be modified.
@@ -169,9 +190,11 @@ public class VideoAttributes implements Serializable {
 		this.size = size;
 	}
 
+	@Override
 	public String toString() {
-		return getClass().getName() + "(codec=" + codec + ", bitRate="
-				+ bitRate + ", frameRate=" + frameRate + ", size=" + size + ")";
+		return "VideoAttributes [codec=" + codec + ", tag=" + tag + ", bitRate=" + bitRate + ", frameRate=" + frameRate
+				+ ", size=" + size + ", videoFrames=" + videoFrames + "]";
 	}
 
+	
 }
