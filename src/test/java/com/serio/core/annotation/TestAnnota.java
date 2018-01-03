@@ -1,10 +1,12 @@
 package com.serio.core.annotation;
 
-import org.junit.Test;
+import java.lang.reflect.Field;
+import java.util.Map;
 
-import com.serio.core.utils.media.Encoder;
-import com.serio.core.utils.media.VideoAttributes;
-import com.serio.core.utils.media.VideoSize;
+import com.serio.core.annotation.media.AnnotationProcesser;
+import com.serio.core.annotation.media.FfmpegOption;
+import com.serio.core.annotation.media.FfmpegOption.OptionType;
+import com.serio.core.utils.media.EncodingAttributes;
 
 import junit.framework.TestCase;
 
@@ -51,17 +53,22 @@ public class TestAnnota extends TestCase{
 //		encoder.setAudioAttributes(null, audioAttributes);
 //	}
 	
-	@Test
-	public void test5() {
-		
-		VideoAttributes videoAttributes = new VideoAttributes();
-		videoAttributes.setBitRate(33);
-		videoAttributes.setCodec("bin246");
-		videoAttributes.setFrameRate(56);
-		videoAttributes.setSize(new VideoSize(640, 360));
-		Encoder encoder = new Encoder();
-		
-		encoder.setVideoAttriutes( null, videoAttributes );
-	}
+//	@Test
+//	public void test5() {
+//		
+//		VideoAttributes videoAttributes = new VideoAttributes();
+//		videoAttributes.setBitRate(33);
+//		videoAttributes.setCodec("bin246");
+//		videoAttributes.setFrameRate(56);
+//		videoAttributes.setSize(new VideoSize(640, 360));
+//		Encoder encoder = new Encoder();
+//		
+//		encoder.setVideoAttriutes( null, videoAttributes );
+//	}
+	
+//	public void test6() {
+//		Map<Field, Object> map = AnnotationProcesser.getSpecifiedAnnotation( EncodingAttributes.class, FfmpegOption.class, "type", OptionType.INPUT );
+//		System.out.println(map);
+//	}
 	
 }

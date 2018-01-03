@@ -29,7 +29,7 @@ public class AudioTest  extends TestCase {
 	public void testCut() {
 		
 		File source = new File("C:\\Users\\zhengliang.shi\\Videos\\3zhzI640.mp4");
-		File target = new File("C:\\Users\\zhengliang.shi\\Videos\\3zhzI6417.jpg");
+		File target = new File("C:\\Users\\zhengliang.shi\\Videos\\3zhzI64ssss17.jpg");
 		try {
 			VideoProcessor videoProcessor = new VideoProcessor();
 			videoProcessor.videoCapture(source, target, 340f, 640, 360);

@@ -20,7 +20,8 @@ package com.serio.core.utils.media;
 
 import java.io.Serializable;
 
-import com.serio.core.annotation.media.ArgName;
+import com.serio.core.annotation.media.FfmpegOption;
+import com.serio.core.annotation.media.FfmpegOption.OptionType;
 
 /**
  * Attributes controlling the video encoding process.
@@ -41,41 +42,41 @@ public class VideoAttributes implements Serializable {
 	 * The codec name for the encoding process. If null or not specified the
 	 * encoder will perform a direct stream copy.
 	 */
-	@ArgName("-vcodec")
+	@FfmpegOption(value="-vcodec", type=OptionType.OUTPUT)
 	private String codec = null;
 
 	/**
 	 * The the forced tag/fourcc value for the video stream.
 	 */
-	@ArgName("-vtag")
+	@FfmpegOption(value="-vtag", type=OptionType.OUTPUT)
 	private String tag = null;
 
 	/**
 	 * The bitrate value for the encoding process. If null or not specified a
 	 * default value will be picked.
 	 */
-	@ArgName("-b")
+	@FfmpegOption(value="-b", type=OptionType.OUTPUT)
 	private Integer bitRate = null;
 
 	/**
 	 * The frame rate value for the encoding process. If null or not specified a
 	 * default value will be picked.
 	 */
-	@ArgName("-r")
+	@FfmpegOption(value="-r", type=OptionType.OUTPUT)
 	private Integer frameRate = null;
 
 	/**
 	 * The video size for the encoding process. If null or not specified the
 	 * source video size will not be modified.
 	 */
-	@ArgName("-s")
+	@FfmpegOption(value="-s", type=OptionType.OUTPUT)
 	private VideoSize size = null;
 	
 	/**
 	 *	-vframes
 	 *	Set the number of video frames to output. This is an obsolete alias for -frames:v, which you should use instead.
 	 */
-	@ArgName("-vframes")
+	@FfmpegOption(value="-vframes", type=OptionType.OUTPUT)
 	private Integer videoFrames = null;
 
 	/**

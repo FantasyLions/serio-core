@@ -761,28 +761,8 @@ public class Encoder {
 		target = target.getAbsoluteFile();
 		target.getParentFile().mkdirs();
 		
-		FFMPEGExecutor ffmpeg = locator.createExecutor();
-		if (offsetAttribute != null) {
-			ffmpeg.addArgument("-ss");
-			ffmpeg.addArgument(String.valueOf(offsetAttribute.floatValue()));
-		}
-		
-		if (durationAttribute != null) {
-			ffmpeg.addArgument("-t");
-			ffmpeg.addArgument(String.valueOf(durationAttribute.floatValue()));
-		}
-		
-		ffmpeg.addArgument("-i");
-		ffmpeg.addArgument(source.getAbsolutePath());
-		
-		setVideoAttriutes( ffmpeg, videoAttributes );
-		
-		setAudioAttributes( ffmpeg, audioAttributes );
-		
-		ffmpeg.addArgument("-f");
-		ffmpeg.addArgument(formatAttribute);
-		ffmpeg.addArgument("-y");
-		ffmpeg.addArgument(target.getAbsolutePath());
+		OptionProcesser optioner = new OptionProcesser( attributes, audioAttributes, videoAttributes );
+		FFMPEGExecutor ffmpeg = optioner.process(locator, source, target );
 		try {
 			ffmpeg.execute();
 		} catch (IOException e) {

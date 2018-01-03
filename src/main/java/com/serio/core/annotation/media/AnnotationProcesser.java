@@ -4,7 +4,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
+import com.serio.core.annotation.media.FfmpegOption.OptionType;
 import com.serio.core.utils.ReflectionUtils;
 
 /**
@@ -18,7 +20,7 @@ public class AnnotationProcesser {
 	 * @param appClazz
 	 * @param annotationClazz
 	 * @param annotationName
-	 * @return
+	 * @return	Map< Field, ffmpegArgName >
 	 */
     public static Map<Field, Object> getAnnotationInfos( Class<?> appClazz, Class<? extends Annotation> annotationClazz, String annotationName ){
     	
@@ -74,5 +76,59 @@ public class AnnotationProcesser {
 		return null;
     	
     }
+    
+    
+    /**
+     * 
+     * @author zl.shi
+     * @param appClazz
+     * @param annotationClass
+     * @param annotationName
+     * @param value
+     * @return	Map< Field, Annotation >
+     */
+    public static Map<Field, Object> getSpecifiedAnnotation( Class<?> appClazz, Class<? extends Annotation> annotationClass, String annotationName, Object value ) {
+    	
+    	Map<Field, Object> map = new HashMap<Field, Object>();
+    	
+    	Field[] fields = appClazz.getDeclaredFields();
+    	
+    	for ( Field field : fields ) {
+    		
+    		if( field.isAnnotationPresent(annotationClass) ) {
+    			Annotation annotation = field.getAnnotation(annotationClass);
+    			if ( annotation == null ) {
+    	    		continue;
+    	    	}
+    			
+    			Object annotationValue = ReflectionUtils.invokeMethod(annotation, annotationName, null);
+    			
+	    		if (Objects.equals(annotationValue, value) ) {
+	    			map.put( field, annotation );
+	    		}
+    		}
+    		
+    	}
+    	
+		return map;
+    	
+    }
+    
+    public static Map<Field, Object> getAllAnnotation( Class<?> appClazz, Class<? extends Annotation> annotationClass ) {
+    	Map<Field, Object> map = new HashMap<Field, Object>();
+    	
+    	Field[] fields = appClazz.getDeclaredFields();
+    	
+    	for ( Field field : fields ) {
+    		
+    		if( field.isAnnotationPresent(annotationClass) ) {
+    			map.put( field, field.getAnnotation(annotationClass) );
+    		}
+    		
+    	}
+    	
+		return map;
+    }
+    		
 
 }

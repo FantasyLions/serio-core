@@ -20,7 +20,8 @@ package com.serio.core.utils.media;
 
 import java.io.Serializable;
 
-import com.serio.core.annotation.media.ArgName;
+import com.serio.core.annotation.media.FfmpegOption;
+import com.serio.core.annotation.media.FfmpegOption.OptionType;
 
 /**
  * Attributes controlling the encoding process.
@@ -35,14 +36,14 @@ public class EncodingAttributes implements Serializable {
 	 * The format name for the encoded target multimedia file. Be sure this
 	 * format is supported (see {@link Encoder#getSupportedEncodingFormats()}.
 	 */
-	@ArgName("-f")
+	@FfmpegOption(value="-f", type= OptionType.OUTPUT)
 	private String format = null;
 
 	/**
 	 * The start offset time (seconds). If null or not specified no start offset
 	 * will be applied.
 	 */
-	@ArgName("-ss")
+	@FfmpegOption(value="-ss", type=OptionType.INPUT)
 	private Float offset = null;
 
 	/**
@@ -50,7 +51,7 @@ public class EncodingAttributes implements Serializable {
 	 * the source stream, starting from the offset, will be completely
 	 * re-encoded in the target stream.
 	 */
-	@ArgName("-t")
+	@FfmpegOption(value="-t", type=OptionType.INPUT)
 	private Float duration = null;
 
 	/**
