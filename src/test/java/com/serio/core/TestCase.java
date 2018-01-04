@@ -2,11 +2,13 @@ package com.serio.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
+import com.serio.core.annotation.parser.ArgName;
+import com.serio.core.model.AnnotationTest;
 import com.serio.core.model.Result;
-import com.serio.core.model.TestModel;
 import com.serio.core.model.TestModelMutilType;
 import com.serio.core.parser.DefaultResultFactory;
 import com.serio.core.parser.DefaultResultParser;
@@ -14,7 +16,7 @@ import com.serio.core.parser.DefaultResultParser;
 /**
  * @author zl.shi
  */
-public class TestCase extends junit.framework.TestCase {
+public class TestCase {
 
 //	@Test
 //	public void test() {
@@ -43,7 +45,7 @@ public class TestCase extends junit.framework.TestCase {
 //		
 //	}
 	
-	@Test
+//	@Test
 	public void test2() {
 		
 		DefaultResultParser parser	 = new DefaultResultParser();
@@ -62,7 +64,7 @@ public class TestCase extends junit.framework.TestCase {
 		test.add("2");
 		test.add("true");
 		test.add("4");
-		test.add("{'name':serio, age:18}");
+		test.add("{name:'serio', age:18}");
 		test.add("[6,4,5]");
 		
 		Result<TestModelMutilType> result = parser.parseResult( test, TestModelMutilType.class);
@@ -71,6 +73,34 @@ public class TestCase extends junit.framework.TestCase {
 			result.getException().printStackTrace();
 		}
 		System.out.println(result.getResultCom());
+		
+		
+	}
+	
+	@Test
+	public void annotationTest() {
+		
+		DefaultResultParser parser	 = new DefaultResultParser();
+		
+		List<String> list = new ArrayList<String>();
+		list.add("serio");
+		list.add("2.2");
+		list.add("true");
+		list.add("{name:'serio1', age:18}");
+		list.add("18");
+		list.add("[6,4,5]");
+
+		Result<AnnotationTest> result = parser.parseResult( list, AnnotationTest.class );
+		System.out.println(result.getResultCom());
+	}
+	
+	@Test
+	public void listTest() {
+//		list.add(1, "20");
+		
+		String[] strs = new String[3];
+		int i = 1;
+		strs[i] = "20";
 		
 		
 	}

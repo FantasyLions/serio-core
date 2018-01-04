@@ -16,4 +16,14 @@ public interface ResultFactory<T> {
 	 */
 	public Result<T> buildResultArg( Result<T> result, Object resultComObj );
 	
+	
+	/**
+	 * 构建result参数
+	 * @author zl.shi
+	 * @param result
+	 * @param resultComObj
+	 * @return
+	 */
+	public Result<Object> buildResult( Result<Object> result, Object resultComObj );
+	
 }

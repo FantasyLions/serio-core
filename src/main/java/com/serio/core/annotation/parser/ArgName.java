@@ -17,4 +17,6 @@ public @interface ArgName {
 	
 	String value() default "";
 	
+	int index() default 0;
+	
 }
