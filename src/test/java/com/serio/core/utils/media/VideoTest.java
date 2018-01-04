@@ -5,6 +5,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.serio.core.media.EncoderException;
+import com.serio.core.media.VideoProcessor;
+
 /**
  * @author zl.shi
  */
@@ -17,7 +20,7 @@ public class VideoTest {
 	public void testCut() {
 		
 		File source = new File("C:\\Users\\zhengliang.shi\\Videos\\3zhzI640.mp4");
-		File target = new File("C:\\Users\\zhengliang.shi\\Videos\\3zhzI64ssss17.jpg");
+		File target = new File("C:\\Users\\zhengliang.shi\\Videos\\3zhzI64sssss17.jpg");
 		try {
 			VideoProcessor videoProcessor = new VideoProcessor();
 			videoProcessor.videoCapture(source, target, 340f, 640, 360);
@@ -31,7 +34,7 @@ public class VideoTest {
 	public void testTrasncoder() {
 		
 		File source = new File("C:\\Users\\zhengliang.shi\\Videos\\3zhzI640.mp4");
-		File target = new File("C:\\Users\\zhengliang.shi\\Videos\\3zhzI64ssss17.3gp");
+		File target = new File("C:\\Users\\zhengliang.shi\\Videos\\3zhzI64sssss17.3gp");
 		try {
 			VideoProcessor videoProcessor = new VideoProcessor();
 			videoProcessor.transcode(source, target);
