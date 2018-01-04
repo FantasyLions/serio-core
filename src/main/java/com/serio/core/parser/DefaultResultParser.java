@@ -1,7 +1,6 @@
 package com.serio.core.parser;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -93,7 +92,13 @@ public class DefaultResultParser implements ResultParser{
 		return fieldNames;
 	}
 	
-	
+	/**
+	 * 没有使用注解，通过继承的方式找到需要赋值的字段
+	 * @author zl.shi
+	 * @param resultList
+	 * @param returnComClass
+	 * @return
+	 */
 	public <T>Result<T> parseResultList( List<String> resultList, Class<?> returnComClass ) {
 		Result result = new Result();
 		
@@ -114,7 +119,7 @@ public class DefaultResultParser implements ResultParser{
 	
 	
 	/**
-	 * 构建Result
+	 * 构建Result，通过继承的方式找到需要赋值的字段
 	 * @param result
 	 * @param resultCom
 	 * @param resultList
