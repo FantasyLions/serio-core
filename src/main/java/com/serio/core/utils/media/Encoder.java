@@ -749,10 +749,6 @@ public class Encoder {
 			EncoderProgressListener listener) throws IllegalArgumentException,
 			InputFormatException, EncoderException {
 		
-		String formatAttribute = attributes.getFormat();
-		Float offsetAttribute = attributes.getOffset();
-		Float durationAttribute = attributes.getDuration();
-		
 		AudioAttributes audioAttributes = attributes.getAudioAttributes();
 		VideoAttributes videoAttributes = attributes.getVideoAttributes();
 		if (audioAttributes == null && videoAttributes == null) {
@@ -762,87 +758,18 @@ public class Encoder {
 		target.getParentFile().mkdirs();
 		
 		OptionProcesser optioner = new OptionProcesser( attributes, audioAttributes, videoAttributes );
-		FFMPEGExecutor ffmpeg = optioner.process(locator, source, target );
+		FFMPEGExecutor ffmpeg = optioner.process( locator, source, target );
 		try {
 			ffmpeg.execute();
 		} catch (IOException e) {
 			throw new EncoderException(e);
 		}
 		
-		parseResult( ffmpeg, source, durationAttribute, offsetAttribute, listener );
+		parseResult( ffmpeg, source, attributes.getDuration(), attributes.getOffset(), listener );
 	}
 	
 	
 	
-	/**
-	 * @author zl.shi
-	 * @throws SecurityException 
-	 * @throws NoSuchFieldException 
-	 */
-	public void setAudioAttributes( FFMPEGExecutor ffmpeg, AudioAttributes audioAttributes ) {
-		try {
-			if (audioAttributes == null) {
-				ffmpeg.addArgument("-an");
-				return;
-			}
-			
-			Map<Field, Object> annotations = AnnotationProcesser.getAnnotationInfos( AudioAttributes.class, ArgName.class, "value" );
-			Field[] fields = AudioAttributes.class.getDeclaredFields();
-			
-			for ( Field field : fields ) {
-				if ( annotations.get(field) == null ) {
-					continue;
-				}
-				Object arg = ReflectionUtils.getObjectAttr(audioAttributes, field, audioAttributes.getClass());
-				if ( arg == null ) {
-					continue;
-				}
-				
-				ffmpeg.addArgument(String.valueOf(annotations.get(field)));
-				ffmpeg.addArgument(String.valueOf(arg));
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
-
-	
-	/**
-	 * @author zl.shi
-	 */
-	public void setVideoAttriutes( FFMPEGExecutor ffmpeg, VideoAttributes videoAttributes ) {
-		
-		try {
-			if (videoAttributes == null) {
-				ffmpeg.addArgument("-vn");
-				return;
-			}
-			
-			Map<Field, Object> annotations = AnnotationProcesser.getAnnotationInfos( VideoAttributes.class, ArgName.class, "value" );
-			Field[] fields = VideoAttributes.class.getDeclaredFields();
-			
-			for ( Field field : fields ) {
-				if ( annotations.get(field) == null ) {
-					continue;
-				}
-				
-				Object arg = ReflectionUtils.getObjectAttr(videoAttributes, field, videoAttributes.getClass());
-				if ( arg == null ) {
-					continue;
-				}
-				
-				ffmpeg.addArgument(String.valueOf(annotations.get(field)));
-				ffmpeg.addArgument(String.valueOf(arg));
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
-
 	public void parseResult( FFMPEGExecutor ffmpeg, File source, Float durationAttribute, Float offsetAttribute, EncoderProgressListener listener ) throws IllegalArgumentException,
 	InputFormatException, EncoderException {
 		

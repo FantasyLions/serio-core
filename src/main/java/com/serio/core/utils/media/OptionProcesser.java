@@ -13,6 +13,7 @@ import com.serio.core.annotation.media.FfmpegOption.OptionType;
 import com.serio.core.utils.ReflectionUtils;
 
 /**
+ * The ffmpeg options handle
  * @author zl.shi
  */
 public class OptionProcesser {
@@ -33,22 +34,37 @@ public class OptionProcesser {
 		this.videoAttributes = videoAttributes;
 	}
 	
-	
+	/**
+	 * Process the ffmpeg options and set the options to ffmpeg.
+	 * @author zl.shi
+	 * @param locator
+	 * @param source
+	 * @param target
+	 * @return
+	 */
 	public FFMPEGExecutor process( FFMPEGLocator locator,  File source, File target ) {
 		return process( locator.createExecutor(), source, target );
 	}
 	
 
-	//	ffmpeg [global_options] {[input_file_options] -i input_url} ... {[output_file_options] output_url} ...
+	/**
+	 * <p>By the Global options, input options output options to classifying the type and set to ffmpeg.</p>
+	 * <p>ffmpeg [global_options] {[input_file_options] -i input_url} ... {[output_file_options] output_url} ...</p>
+	 * @author zl.shi
+	 * @param ffmpeg
+	 * @param source
+	 * @param target
+	 * @return
+	 */
 	public FFMPEGExecutor process( FFMPEGExecutor ffmpeg, File source, File target ) {
 		try {
 			Map<Field, Object> mainTypemap = AnnotationProcesser.getAllAnnotation(EncodingAttributes.class, FfmpegOption.class);
 			Map<Field, Object> videoTypemap = AnnotationProcesser.getAllAnnotation(VideoAttributes.class, FfmpegOption.class);
 			Map<Field, Object> audioTypemap = AnnotationProcesser.getAllAnnotation(AudioAttributes.class, FfmpegOption.class);
 			
-			classifyingType( ffmpeg, mainTypemap, attributes );
-			classifyingType( ffmpeg, audioTypemap, audioAttributes );
-			classifyingType( ffmpeg, videoTypemap, videoAttributes );
+			classifyingType( mainTypemap, attributes );
+			classifyingType( audioTypemap, audioAttributes );
+			classifyingType( videoTypemap, videoAttributes );
 			
 			processAllAttribute( source, target, ffmpeg );
 		} catch (Exception e) {
@@ -58,7 +74,18 @@ public class OptionProcesser {
 	}
 	
 	
-	public void classifyingType( FFMPEGExecutor ffmpeg, Map<Field, Object> typeMap, Object attribute ) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+	/**
+	 * Classifying the type for Global options, input options, output options.
+	 * @author zl.shi
+	 * @param typeMap
+	 * @param attribute
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 */
+	public void classifyingType( Map<Field, Object> typeMap, Object attribute ) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		
 		if ( attribute == null ) {
 			return;
@@ -94,6 +121,14 @@ public class OptionProcesser {
 		}
 	}
 	
+	
+	/**
+	 * Set all of the Global options, input options, output options to ffmpeg.
+	 * @author zl.shi
+	 * @param source
+	 * @param target
+	 * @param ffmpeg
+	 */
 	public void processAllAttribute( File source, File target, FFMPEGExecutor ffmpeg ) {
 		processAttribute( ffmpeg, globalTypeMap );
 		ffmpeg.addArgument("-y");
@@ -105,6 +140,12 @@ public class OptionProcesser {
 	}
 	
 	
+	/**
+	 * Set the Global options, input options, output options to ffmpeg.
+	 * @author zl.shi
+	 * @param ffmpeg
+	 * @param typeMap
+	 */
 	public void processAttribute( FFMPEGExecutor ffmpeg, Map<String, Object> typeMap ) {
 		for ( Entry<String, Object> entry : typeMap.entrySet() ) {
 			ffmpeg.addArgument(entry.getKey());
@@ -114,7 +155,12 @@ public class OptionProcesser {
 	}
 	
 	
-	
+	/**
+	 * Set the Global options, input options, output options to ffmpeg one by one.
+	 * @author zl.shi
+	 * @param ffmpeg
+	 * @param typeMap
+	 */
 	public void process( FFMPEGExecutor ffmpeg, Map<Field, Object> typeMap ) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		for ( Entry<Field, Object> entry : typeMap.entrySet() ) {
 			FfmpegOption ffmpegOption = (FfmpegOption)entry.getValue();
