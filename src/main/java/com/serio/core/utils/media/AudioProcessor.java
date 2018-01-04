@@ -97,5 +97,29 @@ public class AudioProcessor {
 		}
 	}
 
+	/**
+	 * 转码
+	 * <p>
+	 * eg:<br>
+	 * 	videoSource:"C:\\Users\\serio\\Videos\\3zhzI640.mp4"
+	 *  destSource:"C:\\Users\\serio\\Videos\\3zhzI640.3gp
+	 * </p>
+	 * @author zl.shi
+	 * @param srcVideoPath
+	 * @param bitRate
+	 * @param size
+	 * @param destVideoFile
+	 * @throws IOException 
+	 */
+	public void transcode( File videoSource, File destSource ) throws IllegalArgumentException, InputFormatException, EncoderException {
+		AudioAttributes audio = new AudioAttributes();
+		audio.setCodec(MediaConstant.PARAMETER_CODEC_COPY);
+		
+		EncodingAttributes attrs = new EncodingAttributes();
+		attrs.setAudioAttributes(audio);
+		
+		Encoder encoder = new Encoder();
+		encoder.encode( videoSource, destSource, attrs );
+	}
 	
 }
