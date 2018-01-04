@@ -1,12 +1,20 @@
 package com.serio.core.parser;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.serio.core.annotation.AnnotationProcesser;
+import com.serio.core.annotation.parser.ArgName;
 import com.serio.core.model.Result;
-import com.serio.core.utils.ResultUtils;
 import com.serio.core.utils.ReflectionUtils;
+import com.serio.core.utils.ResultUtils;
 
 /**
  * 用于处理接口返回的结果默认解析器，默认接口返回的是一个集合
@@ -19,6 +27,10 @@ public class DefaultResultParser implements ResultParser{
 
 	ResultFactory resultFactory;
 	
+	public DefaultResultParser() {
+		this.resultFactory = new DefaultResultFactory();
+	}
+	
 	/**
 	 * 处理返回的结果list，将其转换成指定的对象
 	 * @see com.serio.core.parser.ResultParser#parseResult(java.util.List, java.lang.Class)
@@ -28,6 +40,61 @@ public class DefaultResultParser implements ResultParser{
 	 * @return
 	 */
 	public <T>Result<T> parseResult( List<String> resultList, Class<?> returnComClass ) {
+		
+		Map<Field, Object> filedsMap = AnnotationProcesser.getAllAnnotation(returnComClass, ArgName.class);
+		
+		if ( filedsMap.size() <= 0 ) {
+			return parseResultList( resultList, returnComClass );
+		} else {
+			return parseResultAnnotation( resultList, returnComClass);
+		}
+		
+	}
+	
+	
+	/**
+	 * Parse the annotation result.
+	 * @author zl.shi
+	 * @param resultList
+	 * @param returnComClass
+	 * @return
+	 */
+	public <T>Result<T> parseResultAnnotation( List<String> resultList, Class<?> returnComClass) {
+		
+		Map<Field, Object> filedsMap = AnnotationProcesser.getAllAnnotation(returnComClass, ArgName.class);
+		String[] fieldNames = annotationFieldsList( filedsMap );
+		
+		return buildResult( new Result(), resultList, returnComClass, fieldNames );
+		
+	}
+	
+	
+	/**
+	 * Find all the fields order list
+	 * @author zl.shi
+	 * @param filedsMap
+	 * @return
+	 */
+	public String[] annotationFieldsList( Map<Field, Object> filedsMap ) {
+		
+		String[] fieldNames = new String[filedsMap.size()];
+		
+		ArgName annotation = null;Field field  = null; 
+		for ( Entry<Field, Object> entry : filedsMap.entrySet() ) {
+			annotation = (ArgName)entry.getValue();
+			if ( StringUtils.isEmpty(annotation.value()) ) {
+				field  = entry.getKey();
+				fieldNames[annotation.index()] = field.getName();
+			} else {
+				fieldNames[annotation.index()] = annotation.value();
+			}
+		}
+		
+		return fieldNames;
+	}
+	
+	
+	public <T>Result<T> parseResultList( List<String> resultList, Class<?> returnComClass ) {
 		Result result = new Result();
 		
 		try {
@@ -43,6 +110,7 @@ public class DefaultResultParser implements ResultParser{
 			return setExceptionResult( result, e );
 		}
 	}
+	
 	
 	
 	/**
@@ -76,6 +144,30 @@ public class DefaultResultParser implements ResultParser{
 		}
 	}
 	
+	
+	/**
+	 * Build the result.
+	 * @author zl.shi
+	 * @param result
+	 * @param resultList
+	 * @param resultComClass
+	 * @param fieldNames
+	 * @return
+	 */
+	public <T>Result<T> buildResult( Result<T> result, List<String> resultList, Class<?> resultComClass,  String[] fieldNames ) {
+		
+		try {
+			
+			Object resultComObj = resultComClass.newInstance();
+					
+			ReflectionUtils.setObjectAttrs(resultList, fieldNames, resultComObj, resultComClass);
+
+			return resultFactory.buildResult(result, resultComObj);
+			
+		} catch (Exception e) {
+			return setExceptionResult( result, e );
+		}
+	}
 	
 
 	/**

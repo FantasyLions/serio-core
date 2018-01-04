@@ -16,5 +16,18 @@ public class DefaultResultFactory implements ResultFactory<ListResultBaseCommon>
 		result.setResultCom((ListResultBaseCommon)resultComObj);
 		return result;
 	}
+	
+	/**
+	 * 
+	 * @author zl.shi
+	 * @param result
+	 * @param resultComObj
+	 * @return
+	 */
+	public Result<Object> buildResult(Result<Object> result, Object resultComObj) {
+		result.setSuccess(true);
+		result.setResultCom( resultComObj );
+		return result;
+	}
 
 }

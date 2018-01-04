@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.serio.core.annotation.media.FfmpegOption.OptionType;
 import com.serio.core.utils.ReflectionUtils;
 
 /**
@@ -20,7 +19,7 @@ public class AnnotationProcesser {
 	 * @param appClazz
 	 * @param annotationClazz
 	 * @param annotationName
-	 * @return	Map< Field, ffmpegArgName >
+	 * @return	Map< Field, Annotation value >
 	 */
     public static Map<Field, Object> getAnnotationInfos( Class<?> appClazz, Class<? extends Annotation> annotationClazz, String annotationName ){
     	
@@ -114,6 +113,14 @@ public class AnnotationProcesser {
     	
     }
     
+    
+    /**
+     * Find all of the filed in the <code>appClazz</code>
+     * @author zl.shi
+     * @param appClazz
+     * @param annotationClass
+     * @return	Map< Field, Annotation >
+     */
     public static Map<Field, Object> getAllAnnotation( Class<?> appClazz, Class<? extends Annotation> annotationClass ) {
     	Map<Field, Object> map = new HashMap<Field, Object>();
     	
