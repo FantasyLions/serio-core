@@ -1,6 +1,6 @@
 package com.serio.core.annotation;
 
-import com.serio.core.annotation.media.ArgName;
+import com.serio.core.annotation.parser.ArgName;
 
 /**
  * @author zl.shi

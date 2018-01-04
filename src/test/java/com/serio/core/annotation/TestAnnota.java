@@ -3,10 +3,9 @@ package com.serio.core.annotation;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import com.serio.core.annotation.media.AnnotationProcesser;
 import com.serio.core.annotation.media.FfmpegOption;
 import com.serio.core.annotation.media.FfmpegOption.OptionType;
-import com.serio.core.utils.media.EncodingAttributes;
+import com.serio.core.media.EncodingAttributes;
 
 import junit.framework.TestCase;
 

@@ -6,6 +6,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.serio.core.media.AudioProcessor;
+import com.serio.core.media.EncoderException;
+
 /**
  * @author zl.shi
  */
