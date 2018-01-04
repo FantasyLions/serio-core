@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 /**
  * @author zl.shi
  */
-public class AudioTest  extends TestCase {
+public class AudioTest {
 	protected static Logger logger = LoggerFactory.getLogger(AudioTest.class);
 //	@Test
 //	public void testOne() {
@@ -25,7 +25,7 @@ public class AudioTest  extends TestCase {
 //	}
 	
 //	D:\software_package\ffmpeg-20171225-613f789-win64-static\bin\ffmpeg.exe -ss 00:00:03 -i C:\\Users\\zhengliang.shi\\Videos\\3zhzI640.mp4 -f mjpeg -r 1 -vframes 1 -s 640*360 -y C:\\Users\\zhengliang.shi\\Videos\\3zhzI640.jpg
-	@Test
+//	@Test
 	public void testCut() {
 		
 		File source = new File("C:\\Users\\zhengliang.shi\\Videos\\3zhzI640.mp4");
@@ -38,4 +38,18 @@ public class AudioTest  extends TestCase {
 		}
 		
 	}
+	
+	@Test
+	public void transcode() {
+		File source = new File("C:\\Users\\zhengliang.shi\\Videos\\test.mp3");
+		File target = new File("C:\\Users\\zhengliang.shi\\Videos\\test.wma");
+		try {
+			AudioProcessor videoProcessor = new AudioProcessor();
+			videoProcessor.transcode(source, target);
+		} catch (EncoderException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 }

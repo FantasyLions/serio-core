@@ -59,10 +59,24 @@ public class MediaConstant {
 	
 	
 	/**
-	 * The codec <code>mjpeg</code>
+	 * The video codec <code>mjpeg</code>
 	 */
-	public static String PARAMETER_CODEC_MJPEG = "mjpeg";
+	public static String PARAMETER_VCODEC_MJPEG			= "mjpeg";
 	
+	/**
+	 * The codec <code>copy</code>
+	 */
+	public static String PARAMETER_CODEC_COPY			= "copy";
+	
+	/**
+	 * The video codec <code>libx264</code>
+	 */
+	public static String PARAMETER_VCODEC_LIB_X264		= "libx264";
+	
+	/**
+	 * The audio codec <code>libfaac</code>
+	 */
+	public static String PARAMETER_ACODEC_LIB_FAAC		= "libfaac";
 	
 
 }

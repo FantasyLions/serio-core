@@ -48,13 +48,13 @@ public class VideoProcessor {
 	public void videoCapture( File videoSource, File imgSource, float time, Integer sizeWitdh, Integer sizeHeight ) throws IllegalArgumentException, InputFormatException, EncoderException {
 		
 		VideoAttributes video = new VideoAttributes();
-		video.setCodec(MediaConstant.PARAMETER_CODEC_MJPEG);
+		video.setCodec(MediaConstant.PARAMETER_VCODEC_MJPEG);
 		video.setFrameRate(1);
 		video.setVideoFrames(1);
 		video.setSize(new VideoSize(sizeWitdh, sizeHeight));
 
 		EncodingAttributes attrs = new EncodingAttributes();
-		attrs.setFormat(MediaConstant.PARAMETER_CODEC_MJPEG);
+		attrs.setFormat(MediaConstant.PARAMETER_VCODEC_MJPEG);
 		attrs.setOffset(time);
 		attrs.setVideoAttributes(video);
 		Encoder encoder = new Encoder();
@@ -65,6 +65,11 @@ public class VideoProcessor {
 	
 	/**
 	 * 转码
+	 * <p>
+	 * eg:<br>
+	 * 	videoSource:"C:\\Users\\serio\\Videos\\3zhzI640.mp4"
+	 *  destSource:"C:\\Users\\serio\\Videos\\3zhzI640.3gp
+	 * </p>
 	 * @author zl.shi
 	 * @param srcVideoPath
 	 * @param bitRate
@@ -72,27 +77,19 @@ public class VideoProcessor {
 	 * @param destVideoFile
 	 * @throws IOException 
 	 */
-	public void transcode( String srcVideoPath, String bitRate, String size, String destVideoFile ) throws IOException {
-		FFMPEGExecutor ffmpeg = locator.createExecutor();
-		ffmpeg.addArgument(MediaConstant.PARAMETER_NAME_SOURCE);
+	public void transcode( File videoSource, File destSource ) throws IllegalArgumentException, InputFormatException, EncoderException {
+		VideoAttributes video = new VideoAttributes();
+		video.setCodec(MediaConstant.PARAMETER_CODEC_COPY);
 		
-		ffmpeg.addArgument(srcVideoPath); 
-        // 视频选项
-		ffmpeg.addArgument(MediaConstant.PARAMETER_NAME_FMT);
-        ffmpeg.addArgument("mp4");     // 输出mp4格式
-        ffmpeg.addArgument("-vcodec"); // 编码器
-        ffmpeg.addArgument("libx264");
-        ffmpeg.addArgument("-b:v");    // 视频码率
-        ffmpeg.addArgument(bitRate);
-        ffmpeg.addArgument("-b:a");    // 音频码率
-        ffmpeg.addArgument("32k");
-        ffmpeg.addArgument(MediaConstant.PARAMETER_NAME_SIZE);  // 图像分辨率
-        ffmpeg.addArgument(size);
-                
-        ffmpeg.addArgument(MediaConstant.PARAMETER_NAME_DESTINATION);  // 覆盖输出文件
-        ffmpeg.addArgument(destVideoFile);
-        
-        ffmpeg.execute();
+		AudioAttributes audio = new AudioAttributes();
+		audio.setCodec(MediaConstant.PARAMETER_CODEC_COPY);
+		
+		EncodingAttributes attrs = new EncodingAttributes();
+		attrs.setVideoAttributes(video);
+		attrs.setAudioAttributes(audio);
+		
+		Encoder encoder = new Encoder();
+		encoder.encode( videoSource, destSource, attrs );
 	}
 	
 
