@@ -16,7 +16,7 @@ public class VideoTest {
 
 	
 //	D:\software_package\ffmpeg-20171225-613f789-win64-static\bin\ffmpeg.exe -ss 00:00:03 -i C:\\Users\\zhengliang.shi\\Videos\\3zhzI640.mp4 -f mjpeg -r 1 -vframes 1 -s 640*360 -y C:\\Users\\zhengliang.shi\\Videos\\3zhzI640.jpg
-	@Test
+//	@Test
 	public void testCut() {
 		
 		File source = new File("C:\\Users\\zhengliang.shi\\Videos\\3zhzI640.mp4");
@@ -30,7 +30,7 @@ public class VideoTest {
 		
 	}
 	
-	@Test
+//	@Test
 	public void testTrasncoder() {
 		
 		File source = new File("C:\\Users\\zhengliang.shi\\Videos\\3zhzI640.mp4");
@@ -43,4 +43,30 @@ public class VideoTest {
 		}
 		
 	}
+	
+	@Test
+	public void ebbinghausForgettingCurve() {
+		
+		int[] forgetTime = { 2, 4 , 7 ,15 };
+		
+		int listNum = 38;
+		
+		System.out.println("			新学		背诵");
+		for ( int i = 0; i < listNum; i++ ) {
+			System.out.print("第"+(i+1)+"天：	");
+			System.out.print( "		list"+(i+1) );
+			
+			for ( int forget = 0; forget < forgetTime.length; forget++  ) {
+				if ( (i+1) > forgetTime[forget] - 1 ) {
+					System.out.print( "		*list"+((i+1) - (forgetTime[forget] - 1)) );
+				}
+			}
+			
+			System.out.println( "		*list"+(i+1) );
+		}
+		
+		
+	}
+	
+	
 }
