@@ -115,7 +115,7 @@ public class HttpTools {
   
   public static String doGetURL(String url ) {
     String responseStr = null;
-    HttpClient client = HttpClientBuilder.create().build();
+    HttpClient client = HttpClientBuilder.create().useSystemProperties().build();
     HttpGet request = new HttpGet(url);
     // get response string
     try {
