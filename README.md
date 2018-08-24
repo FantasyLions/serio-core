@@ -37,9 +37,6 @@ Reduce repetitive code
 #### `com.serio.core.parser`
 这个包下的类用于处理接口的返回结果。经常会接到一些任务，去调用第三方公司的接口去查询一些信息，而这些信息一般都是直接返回一个`list`很难知道哪个值是属于哪个字段的。通过`parser`配置后可以快速的解析出结果
 
-#### `com.serio.core.media`
-这个包主要用于处理视频、 音频、 图片等一些媒体资源，代码基于`sauronsoftware`开源项目进行优化和升级。
-[点击查看文档](http://www.sauronsoftware.it/projects/jave/manual.php)
 
 
 ## maven 部署命令
